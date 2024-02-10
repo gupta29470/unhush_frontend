@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:html' as html;
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:unhush_assignment/constants/api_endpoints.dart';
 import 'package:unhush_assignment/login/models/user_model.dart';
 import 'package:unhush_assignment/login/repository/login_repository.dart';
 import 'package:uuid/uuid.dart';
@@ -13,7 +14,7 @@ class LoginCubit extends Cubit<LoginState> {
 
   final LoginRepository loginRepository;
 
-  String redirectURL = "http://localhost:62534/";
+  String redirectURL = APIEndpoints.redirectURI;
 
   bool isLoginCalled = false;
 
@@ -23,10 +24,7 @@ class LoginCubit extends Cubit<LoginState> {
     emit(const LoginLoadingState());
 
     try {
-      UserModel? userModel = await loginRepository.login(
-        code: code,
-        redirectURL: redirectURL,
-      );
+      UserModel? userModel = await loginRepository.login(code);
       if (userModel != null) {
         emit(
           LoginSuccessState(userModel),
